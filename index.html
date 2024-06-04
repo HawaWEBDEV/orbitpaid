@@ -1,0 +1,329 @@
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Orbit Client</title>
+  <link rel="icon" type="image/png" href="https://cdn.discordapp.com/attachments/1195643834684670035/1218682765260623982/image.png?ex=66088dc5&is=65f618c5&hm=a2300f88f5bc9d37646e7e1321d2021fe1b56fef77320b4fbcde86f52df80583">
+  <style>
+    body, html {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      overflow: hidden; 
+    }
+
+    .background {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+    }
+
+    .gif-container {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image: url('https://media1.giphy.com/media/v1.Y2lkPTc5MGI3NjExc3I5ZGllcXV1YjZ0eW13cGloMTY4djM4aXdzOGUwZTdlN3ZzcGJ0OCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/0FweJstPNWLf4T2nIe/giphy.gif');
+      background-size: cover;
+    }
+
+    .square {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 1000px;
+      height: 600px;
+      background: linear-gradient(to bottom, rgba(128, 0, 128, 0.6), rgba(0, 0, 50, 0.8)); 
+      border-radius: 20px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+      color: white; 
+      text-align: center;
+    }
+
+    p {
+      font-size: 30px;
+      margin-bottom: 10px;
+      text-shadow: 0 0 10px #000;
+    }
+
+    .orbit-client {
+      font-size: 50px;
+      margin-bottom: 20px;
+      text-shadow: 0 0 10px #000;
+      animation: glowing 2s linear infinite; 
+    }
+
+    @keyframes glowing {
+      0% {
+        text-shadow: 0 0 10px #000, 0 0 20px #ff00ff, 0 0 30px #ff00ff, 0 0 40px #ff00ff, 0 0 50px #ff00ff, 0 0 60px #ff00ff, 0 0 70px #ff00ff; 
+      }
+      50% {
+        text-shadow: none;
+      }
+      100% {
+        text-shadow: 0 0 10px #000, 0 0 20px #ff00ff, 0 0 30px #ff00ff, 0 0 40px #ff00ff, 0 0 50px #ff00ff, 0 0 60px #ff00ff, 0 0 70px #ff00ff; 
+      }
+    }
+
+    .button-container {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .buy-button,
+    .purchase-button,
+    .features-button,
+    .why-button,
+    .discord-button,
+    .dev-credit-button {
+      background-color: #0a0a2a;
+      color: white;
+      padding: 10px 20px;
+      font-size: 1.2em;
+      border: none;
+      border-radius: 5px;
+      box-shadow: 0 0 20px #0a0a2a;
+      cursor: pointer;
+      margin: 5px;
+      transition: opacity 0.5s ease;
+    }
+
+    .buy-button:hover,
+    .purchase-button:hover,
+    .why-button:hover,
+    .features-button:hover,
+    .discord-button:hover,
+    .dev-credit-button:hover {
+      background-color: #004080;
+      box-shadow: 0 0 30px #004080;
+    }
+
+    .panel-overlay {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5);
+      z-index: 1;
+      transition: opacity 0.5s ease;
+    }
+    .speck {
+      position: absolute;
+      width: 2px;
+      height: 2px;
+      background-color: #fff; 
+      animation: fall 4s linear infinite; 
+    }
+
+    @keyframes fall {
+      0% {
+        transform: translateY(-100px) rotateZ(0deg); 
+      }
+      100% {
+        transform: translateY(calc(100vh + 100px)) rotateZ(360deg); 
+      }
+    }
+
+    .panel {
+      display: none;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 70%;
+      background-color: #0a0a2a;
+      color: white;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
+      z-index: 2;
+      transition: opacity 0.5s ease;
+    }
+
+    .panel h2 {
+      font-size: 1.5em;
+      margin-top: 0;
+    }
+
+    .panel p {
+      font-size: 20px;
+    }
+  </style>
+</head>
+<body>
+  <div class="background">
+    <div class="gif-container"></div>
+    <div class="square">
+      <p class="orbit-client">Orbit Client</p>
+      <div class="button-container">
+        <button class="buy-button" onclick="openPanel('buy-panel')">Buy Client</button>
+        <button class="features-button" onclick="openPanel('features-panel')">Features</button>
+        <button class="why-button" onclick="openPanel
+('why-panel')">Why Buy</button>
+        <button class="dev-credit-button" onclick="openPanel('dev-panel')">Dev Credit</button>
+        <button class="discord-button" onclick="openDiscord()">Discord</button>
+      </div>
+    </div>
+  </div>
+
+
+
+  
+  <script>
+    //shibas code
+    function createSpeck() {
+      const speck = document.createElement('div');
+      speck.className = 'speck';
+      speck.style.left = Math.random() * window.innerWidth + 'px'; 
+      document.body.appendChild(speck);
+
+      speck.addEventListener('animationend', () => {
+        speck.remove();
+      });
+    }
+
+    function createSpecksInterval() {
+      setInterval(createSpeck, 100); 
+    }
+
+
+    window.onload = function () {
+      createSpecksInterval();
+    };
+  </script>
+
+  <div id="buy-panel-overlay" class="panel-overlay" onclick="closePanel('buy-panel')"></div>
+  <div id="buy-panel" class="panel">
+    <h2>Payment Methods For Client</h2>
+    <h3>These are different than Web so buy with these for Client</h3>
+    <div>
+      <p>
+        <strong><span style="font-size: 24px;">↯FOR BUY ORBIT PAID MENU all payments are 10 dollars  !↯</span></strong><br>
+        <img src="https://cdn.discordapp.com/emojis/1188624152496701491.png" alt="CashApp Emoji" style="width: 16px; height: 16px;"> 
+        <strong>cashapp</strong> is <strong><a href="https://cash.app/$hawadev" target="_blank">$hawaDEV</a></strong> <a href="https://cash.app/$hawadev" target="_blank"><img src="https://cdn.discordapp.com/emojis/1188624152496701491.png" alt="CashApp Emoji" style="width: 16px; height: 16px;"></a><br>
+        <img src="https://cdn.discordapp.com/emojis/1181087554322309120.png" alt="Robux Emoji" style="width: 16px; height: 16px;"> 
+        <a href="https://www.roblox.com/library/16256816347/ORBIT-MENU" target="_blank">Robux UGC Link</a><br>
+        <img src="https://cdn.discordapp.com/emojis/1191835617907196014.png" alt="PayPal Emoji" style="width: 16px; height: 16px;"> 
+        <strong>IZZYC2ONTOP@proton.me</strong> (for the moment)<br>
+        <img src="https://cdn.discordapp.com/emojis/1188624156594548896.png" alt="GorillaTag Emoji" style="width: 16px; height: 16px;"> 
+        2 STEAM <strong>UNBAN</strong> ACC
+      </p>
+    </div>
+  </div>
+
+  <div id="purchase-panel-overlay" class="panel-overlay" onclick="closePanel('purchase-panel')"></div>
+  <div id="purchase-panel" class="panel">
+    <h2>Payment Methods For Web Service</h2>
+    <h3>These are different than Client so buy with these for Web</h3>
+    <div>
+      <p>
+        <strong><span style="font-size: 24px;">↯Payments For Orbit Web Service all payments are 10 dollars !↯</span></strong><br>
+        <img src="https://cdn.discordapp.com/emojis/1188624152496701491.png" alt="CashApp Emoji" style="width: 16px; height: 16px;"> 
+        <strong>cashapp</strong> is <strong><a href="https://cash.app/$hawadev" target="_blank">$hawaDEV</a></strong> <a href="https://cash.app/$hawadev" target="_blank"><img src="https://cdn.discordapp.com/emojis/1188624152496701491.png" alt="CashApp Emoji" style="width: 16px; height: 16px;"></a><br>
+        <img src="https://cdn.discordapp.com/emojis/1191835617907196014.png" alt="PayPal Emoji" style="width: 16px; height: 16px;"> 
+        <strong></strong>My<a href="https://www.paypal.me/UnknownClient477" target="_blank">paypal!</a><br>
+        <img src="https://cdn.discordapp.com/emojis/1181087554322309120.png" alt="Robux Emoji" style="width: 16px; height: 16px;"> 
+        <a href="https://www.roblox.com/catalog/16015481299/SOLAR-paid" target="_blank">Robux UGC Link</a><br>
+        <img src="https://cdn.discordapp.com/emojis/1188624156594548896.png" alt="GorillaTag Emoji" style="width: 16px; height: 16px;"> 
+        1 STEAM <strong>UNBAN</strong> ACC
+      </p>
+    </div>
+  </div>
+
+  <div id="features-panel-overlay" class="panel-overlay" onclick="closePanel('features-panel')"></div>
+  <div id="features-panel" class="panel">
+    <h1><b><u>Orbit Features</u></b></h1>
+    <div>
+      <p>Disable Anticheat</p>
+      <p>Set Master</p>
+      <p>Acid All/UnAcid All</p>
+      <p>Name Change All</p>
+      <p>Name Change All KKK, nword, and more</p>
+      <p>Freeze Rig Gun</p>
+      <p>Freeze Rig All</p>
+      <p>Quit Application Gun</p>
+      <p>Quit Application All</p>
+      <p>Instant crash gun</p>
+      <p>Instant crash all</p>
+      <p>Instant crash all but with SPICE</p>
+      <p>Float Player Gun</p>
+      <p>Instant SS Invis gun</p>
+      <p>Instant SS Kick Gun</p>
+      <p>Smexy Mat All</p>
+      <p>Anti Report</p>
+      <p>Freeze Player/Stop Player</p>
+      <p>Freeze/Stop All Players</p>
+      <p>Lag Gun</p>
+      <p>Lag All</p>
+      <p>More OP Mods</p>
+      <p>Basic Mods: Platforms, etc.</p>
+      <p>Fun Mods
+        : Spin monkey spammers, etc.</p>
+      </div>
+    </div>
+  
+    <div id="why-panel-overlay" class="panel-overlay" onclick="closePanel('why-panel')"></div>
+    <div id="why-panel" class="panel">
+      <h2>Why Buy Orbit?</h2>
+      <div>
+        <p>1. We update often</p>
+        <p>2. We have OP features You can check out above</p>
+        <p>3. We are cheap and offer various payment methods as seen when you click Buy button</p>
+        <p>4. We are chill with outspect so we won't get cracked like every other loader </p>
+        <p>5. We keep you ahead in the modding community!</p>
+        <p>6. We are active and like to have buyer interactions and stuff</p>
+      </div>
+    </div>
+  
+    <div id="dev-panel-overlay" class="panel-overlay" onclick="closePanel('dev-panel')"></div>
+    <div id="dev-panel" class="panel">
+      <h2>Dev Credit Panel</h2>
+      <div>
+        <p>entity works on the loader</p>
+        <p>Cypher works on menu mods with zenkisontop</p>
+        <p>zenkizsontop works on menu mods with solar</p>
+        <p>Hawa works on website and soon to become loader and menu dev (maybe)</p>
+      </div>
+    </div>
+  
+    <script>
+      function openPanel(panelId) {
+        var panel = document.getElementById(panelId);
+        var overlay = document.getElementById(panelId + "-overlay");
+        panel.style.opacity = "0";
+        overlay.style.opacity = "0";
+        panel.style.display = "block";
+        overlay.style.display = "block";
+        setTimeout(function() {
+          panel.style.opacity = "1";
+          overlay.style.opacity = "1";
+        }, 50);
+      }
+  
+      function closePanel(panelId) {
+        var panel = document.getElementById(panelId);
+        var overlay = document.getElementById(panelId + "-overlay");
+        panel.style.opacity = "0";
+        overlay.style.opacity = "0";
+        setTimeout(function() {
+          panel.style.display = "none";
+          overlay.style.display = "none";
+        }, 500);
+      }
+  
+      function openDiscord() {
+        window.open("https://discord.gg/orbitpaid", "_blank");
+      }
+    </script>
+  </body>
+  </html>
+    
